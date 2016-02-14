@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>StompBox Panel</title>
+
+    <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/style.css" rel="stylesheet">
+	<link href="css/interact.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top" class="index">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+
+            <div class="navbar-header page-scroll">
+      
+                <a class="navbar-brand pull-left" href="../">StompBox</a>
+            </div>
+
+
+  <form>
+<div id="btnconnect">
+<a href="connexion.php" class="btn btn-success btn-sm"> Connexion <i class="fa fa-sign-in"></i></a></div>
+<div id="btnsign" class="hidden-xs">
+<a href="inscription.php" class="btn btn-success btn-sm"> Inscription <i class="fa fa-user"></i></a>
+  </form>
+  </div>
+</li>
+            </div>
+            <!-- /.navbar-collapse -->
+
+    </nav>
+
+	
+		<br><br/><br><br/><br><br/><div class="alert alert-warning text-center">Attention! Work In Progress!</div><br><br/>
+
+<div class="col-lg-2">
+<ul id="sidebar" class="nav nav-pills nav-stacked" style="max-width: 200px;">
+    <li class="active"><a class="menu" href="#main"><span class="glyphicon glyphicon-off"></span>  Overview</a></li>
+    <li><a class="menu" href="#"><span class="glyphicon glyphicon-user"></span>  Profile</a></li>
+    <li><a class="menu" href="#"><span class="glyphicon glyphicon-filter"></span>  Paramètres</a></li>
+    <li><a class="menu" href="#"><span class="glyphicon glyphicon-comment"></span>  Aide</a></li>
+    <li><a class="menu" href="#"><span class="glyphicon glyphicon-earphone"></span>  Contact</a></li>
+</ul>  
+
+</div>
+
+<div class="col-lg-offset-2 main" >
+
+  <div id="inner-dropzone" class="dropzone">*StompBox* Glissez déposez</div>
+  <div id="yes-drop" class="draggable drag-drop"> Beat-TEST</div>
+
+ <div class="container">
+      <ul class="nav nav-pills">
+          <li class="active"><a class="menu" href="#beat">Beat</a></li>
+          <li><a class="menu" href="#voix">Voix</a></li>
+          <li><a class="menu" href="#electro">Electro</a></li>
+		  <li><a  class="menu" href="#autre">Autres</a></li>
+      </ul>
+      <div class="tab-content">
+          <div class="tab-pane active" id="beat"> <div id="yes-drop" class="draggable drag-drop"> Beat-Long1 </div> <div id="yes-drop" class="draggable drag-drop"> Beat-gras </div> </div>
+          <div class="tab-pane" id="voix"> <div id="yes-drop" class="draggable drag-drop"> Voix aigue </div></div>
+          <div class="tab-pane" id="electro">Pas de son électro pour le moment</div>
+		  <div class="tab-pane" id="autre">Pas d'autre son pour le moment</div>
+      </div>
+
+    </div>
+	<script src="js/interact.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+      $(function(){
+        $('a.menu')
+        .click(function (e) {
+          e.preventDefault();
+          $(this).tab('show');
+        })
+      });
+    </script>
+
+<script>
+
+// target elements with the "draggable" class
+interact('.draggable')
+  .draggable({
+    // enable inertial throwing
+    inertia: true,
+
+    // enable autoScroll
+    autoScroll: true,
+
+    // call this function on every dragmove event
+    onmove: dragMoveListener,
+    // call this function on every dragend event
+    onend: function (event) {
+      var textEl = event.target.querySelector('p');
+
+      textEl && (textEl.textContent =
+        'moved a distance of '
+        + (Math.sqrt(event.dx * event.dx +
+                     event.dy * event.dy)|0) + 'px');
+    }
+  });
+
+  function dragMoveListener (event) {
+    var target = event.target,
+        // keep the dragged position in the data-x/data-y attributes
+        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+    // translate the element
+    target.style.webkitTransform =
+    target.style.transform =
+      'translate(' + x + 'px, ' + y + 'px)';
+
+    // update the posiion attributes
+    target.setAttribute('data-x', x);
+    target.setAttribute('data-y', y);
+  }
+
+  // this is used later in the resizing and gesture demos
+  window.dragMoveListener = dragMoveListener;
+
+
+// enable draggables to be dropped into this
+interact('.dropzone').dropzone({
+  // only accept elements matching this CSS selector
+  accept: '#yes-drop',
+  // Require a 75% element overlap for a drop to be possible
+  overlap: 0.01,
+
+  // listen for drop related events:
+
+  ondropactivate: function (event) {
+    // add active dropzone feedback
+    event.target.classList.add('drop-active');
+  },
+  ondragenter: function (event) {
+    var draggableElement = event.relatedTarget,
+        dropzoneElement = event.target;
+
+    // feedback the possibility of a drop
+    dropzoneElement.classList.add('drop-target');
+    draggableElement.classList.add('can-drop');
+    draggableElement.textContent = 'Ecouter';
+  },
+  ondragleave: function (event) {
+    // remove the drop feedback style
+    event.target.classList.remove('drop-target');
+    event.relatedTarget.classList.remove('can-drop');
+    event.relatedTarget.textContent = 'Eteint';
+  },
+  ondrop: function (event) {
+    event.relatedTarget.textContent = 'En cours d\'écoute';
+
+  },
+  ondropdeactivate: function (event) {
+    // remove active dropzone feedback
+    event.target.classList.remove('drop-active');
+    event.target.classList.remove('drop-target');
+  }
+});
+
+
+</script>
+</div>
+  </body>
+
+</html>
